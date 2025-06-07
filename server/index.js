@@ -16,8 +16,16 @@ if (!dbExists) {
       id TEXT PRIMARY KEY,
       title TEXT NOT NULL,
       description TEXT,
-      datetime TEXT NOT NULL
+      datetime TEXT NOT NULL,
+      bgColor TEXT
     )`);
+  });
+} else {
+  // ensure new column exists
+  db.run('ALTER TABLE events ADD COLUMN bgColor TEXT', err => {
+    if (err && !/duplicate column/.test(err.message)) {
+      console.error('Error ensuring bgColor column', err);
+    }
   });
 }
 
@@ -27,11 +35,11 @@ app.use(express.json());
 
 // API to create event
 app.post('/api/events', (req, res) => {
-  const { title, description, datetime } = req.body;
+  const { title, description, datetime, bgColor } = req.body;
   if (!title || !datetime) return res.status(400).json({ error: 'title and datetime required' });
   const id = Math.random().toString(36).substring(2, 8);
-  const stmt = db.prepare('INSERT INTO events (id, title, description, datetime) VALUES (?, ?, ?, ?)');
-  stmt.run(id, title, description || '', datetime, function(err) {
+  const stmt = db.prepare('INSERT INTO events (id, title, description, datetime, bgColor) VALUES (?, ?, ?, ?, ?)');
+  stmt.run(id, title, description || '', datetime, bgColor || null, function(err) {
     if (err) {
       console.error(err);
       return res.status(500).json({ error: 'db error' });
