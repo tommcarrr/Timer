@@ -1,0 +1,6 @@
+body { margin:0; font-family: Arial, sans-serif; }
+nav { background:#282c34; padding:10px; }
+nav a { color:white; text-decoration:none; margin-right:10px; }
+.container { max-width:600px; margin:20px auto; padding:10px; }
+input, textarea { width:100%; padding:8px; margin:5px 0; }
+button { padding:8px 16px; }
