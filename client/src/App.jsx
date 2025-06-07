@@ -6,14 +6,18 @@ import './App.css';
 export default function App() {
   return (
     <div>
-      <nav>
-        <Link to="/create">Create Event</Link>
+      <nav className="navbar navbar-dark bg-dark mb-4">
+        <div className="container">
+          <Link className="navbar-brand" to="/create">Event Timer</Link>
+        </div>
       </nav>
-      <Routes>
-        <Route path="/create" element={<CreateEvent />} />
-        <Route path="/event/:id" element={<EventPage />} />
-        <Route path="*" element={<CreateEvent />} />
-      </Routes>
+      <div className="container">
+        <Routes>
+          <Route path="/create" element={<CreateEvent />} />
+          <Route path="/event/:id" element={<EventPage />} />
+          <Route path="*" element={<CreateEvent />} />
+        </Routes>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+function contrastColor(hex) {
+  if (!hex) return '#000';
+  const c = hex.replace('#', '');
+  const r = parseInt(c.substr(0, 2), 16);
+  const g = parseInt(c.substr(2, 2), 16);
+  const b = parseInt(c.substr(4, 2), 16);
+  const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+  return yiq >= 128 ? '#000' : '#fff';
+}
+
 function countdown(target) {
   const diff = new Date(target) - new Date();
   if (diff <= 0) return 'Event started!';
@@ -32,11 +42,20 @@ export default function EventPage() {
 
   if (!event) return <p>Loading...</p>;
 
+  const textColor = contrastColor(event.bgColor || '#ffffff');
+  const styles = {
+    backgroundColor: event.bgColor || '#ffffff',
+    color: textColor,
+    minHeight: '100vh'
+  };
+
   return (
-    <div className="container">
-      <h2>{event.title}</h2>
-      <p>{event.description}</p>
-      <h3>{time}</h3>
+    <div className="d-flex flex-column justify-content-center text-center" style={styles}>
+      <div className="container py-4">
+        <h2 className="mb-3">{event.title}</h2>
+        <p className="lead">{event.description}</p>
+        <h3>{time}</h3>
+      </div>
     </div>
   );
 }
